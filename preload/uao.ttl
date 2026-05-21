@@ -1,0 +1,101 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix iso: <https://github.com/CoreSenseEU/CoreSense/blob/main/models/ontology/coresense_ontologies/ISO/iso.sysml#>.
+@prefix uao: <https://github.com/CoreSenseEU/CoreSense/blob/main/models/ontology/coresense_ontologies/UAO/uao.sysml#>.
+@prefix sysml2: <https://github.com/Systems-Modeling/SysML-v2-Release#>.
+
+
+## uaa.sysml
+uao:Mission rdfs:subClassOf iso:Goal.
+uao:Performance rdfs:subClassOf iso:Attribute.
+uao:Mode rdfs:subClassOf iso:Entity.
+uao:Functionality rdfs:subClassOf iso:Capability.
+  #part mode[0..*] : Mode;
+
+## performance.sysml
+uao:MeasureOfEffectiveness rdfs:subClassOf uao:Performance.
+  #attribute moe_measure : Measure;
+
+uao:MeasureOfPerformance rdfs:subClassOf uao:Performance.
+  #attribute mop_measure : Measure;
+
+uao:TechnicalPerformanceMeasure rdfs:subClassOf uao:Performance.
+  #attribute tpm_measure : Measure;
+
+
+uao:has_expected_mop rdf:type rdf:Property;
+  rdfs:domain uao:Functionality;
+  rdfs:range uao:MeasureOfPerformance.
+
+uao:has_required_mop rdf:type rdf:Property;
+  rdfs:domain iso:Capability;
+  rdfs:range uao:MeasureOfPerformance.
+
+uao:has_tpm rdf:type rdf:Property;
+  rdfs:domain iso:SystemEntity;
+  rdfs:range uao:TechicalPerformanceMeasure.
+
+uao:has_moe rdf:type rdf:Property;
+  rdfs:domain uao:Functionality;
+  rdfs:range uao:MeasureOfEffectiveness.
+
+uao:refers_to rdf:type rdf:Property;
+  rdfs:domain uao:Performance;
+  rdfs:range iso:System.
+
+uao:contributes_to rdf:type rdf:Property;
+  rdfs:domain uao:Performance;
+  rdfs:range iso:Goal.
+
+uao:measured_in_context rdf:type rdf:Property;
+  rdfs:domain uao:Performance;
+  rdfs:range iso:Context.
+
+
+## functionality.sysml
+#attribute composable_functionality : Composable;
+
+uao:has_actual_mop rdf:type rdf:Property;
+  rdfs:domain uao:Functionality;
+  rdfs:range uao:MeasureOfPerformance.
+
+uao:reifies rdf:type rdf:Property;
+  rdfs:domain uao:Functionality;
+  rdfs:range iso:Capability.
+
+uao:satisfies rdf:type rdf:Property;
+  rdfs:domain uao:Functionality;
+  rdfs:range iso:Goal.
+
+uao:depends_on rdf:type rdf:Property;
+  rdfs:domain uao:Functionality;
+  rdfs:range iso:Context.
+
+uao:composed_of rdf:type rdf:Property;
+  rdfs:domain uao:Functionality;
+  rdfs:range uao:Functionality.
+
+uao:mode_uses rdf:type rdf:Property;
+  rdfs:domain uao:Mode;
+  rdfs:range iso:Function.
+
+## mission.sysml
+
+uao:achieved_by rdf:type rdf:Property;
+  rdfs:domain iso:Mission;
+  rdfs:range iso:System.
+
+uao:interested_in_sys_attr rdf:type rdf:Property;
+  rdfs:domain iso:Mission;
+  rdfs:range iso:Value.
+
+uao:has_subgoal rdf:type rdf:Property;
+  rdfs:domain iso:Mission;
+  rdfs:range iso:Goal.
+
+uao:depends_on rdf:type rdf:Property;
+  rdfs:domain iso:Mission;
+  rdfs:range iso:Context.
+
+
+

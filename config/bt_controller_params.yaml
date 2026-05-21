@@ -1,0 +1,12 @@
+bt_controller:
+  ros__parameters:
+    action_name: "/coresense/run_bt" # The ROS action name (defaults to `bt_execution`)
+    tick_frequency: 100 # Frequency to tick the behavior tree at (defaults to 100 Hz)
+    groot2_port: 1667 # Server port to publish Groot2 messages on (defaults to 1667)
+    ros_plugins_timeout: 1000  # Timeout to wait for plugin action servers (defaults 1000 ms)
+
+    plugins: # List of 'package_name/subfolder' containing BehaviorTree Plugins to load into the factory (defaults to '{}')
+      - coresense_bt_controller/bt_plugins
+
+    behavior_trees: # List of 'package_name/subfolder' containing SubTrees to load into the factory (defaults to '{}')
+      - coresense_bt_controller/behavior_trees

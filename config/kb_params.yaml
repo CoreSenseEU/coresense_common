@@ -1,0 +1,12 @@
+# Where on the system to persist the oxigraph store folder
+store_path: "/tmp/triplestar_kb"
+
+# Base IRI for resolving relative IRIs and functions in the KB.
+base_iri: "https://coresense.eu/"
+
+# Turtle files to load at startup.
+preload_files:
+  - sysml2.ttl
+  - iso.ttl
+  - cso.ttl
+  - uao.ttl
