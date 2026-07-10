@@ -5,6 +5,7 @@
 #include <behaviortree_ros2/tree_execution_server.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include "coresense_msgs/srv/register_behavior_tree.hpp"
+#include "triplestar_msgs/srv/sparql_query.hpp"
 
 #include <string>
 #include <optional>
@@ -19,12 +20,14 @@ public:
   BTController(const rclcpp::NodeOptions& options)
     : TreeExecutionServer(std::make_unique<rclcpp::Node>("bt_controller", options))
   {
+    //TODO: get a kb client
+    get_modelets_client_ptr = node()->create_client<triplestar_msgs::srv::SPARQLQuery>("/triplestar/query/get_modelets");
     // TODO: remove this from the blackboard and just set the query service in AssembleDecisionHeuristic
     //this->node()->declare_parameter("prolog_query_service", "/query");
     //this->node()->declare_parameter("prolog_assert_topic", "/assert");
     //this->node()->declare_parameter("prolog_retract_topic", "/retract");
-    register_behavior_tree_server_ptr = this->node()->create_service<coresense_msgs::srv::RegisterBehaviorTree>("/bt_controller/register_bt", std::bind(&BTController::registerBehaviorTreeCB, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-    this->node()->declare_parameter("external_behavior_trees", rclcpp::ParameterType::PARAMETER_STRING_ARRAY);
+    register_behavior_tree_server_ptr = node()->create_service<coresense_msgs::srv::RegisterBehaviorTree>("/bt_controller/register_bt", std::bind(&BTController::registerBehaviorTreeCB, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+    node()->declare_parameter("external_behavior_trees", rclcpp::ParameterType::PARAMETER_STRING_ARRAY);
   }
 
   void registerBehaviorTreeCB(
@@ -33,11 +36,14 @@ public:
   const std::shared_ptr<coresense_msgs::srv::RegisterBehaviorTree::Request> request);
 
 protected:
+  rclcpp::Client<triplestar_msgs::srv::SPARQLQuery>::SharedPtr get_modelets_client_ptr;
   /**
    * @brief Optional callback invoked when a goal is received and before the
    * tree is created. If it returns false, the goal will be rejected.
    */
   bool onGoalReceived(const std::string& tree_name, const std::string& payload) override;
+  void set_blackboard_from_kb(BT::GoalResources& session, std::string key_str);
+
 
   /**
    * @brief Optional callback invoked after the tree is created.

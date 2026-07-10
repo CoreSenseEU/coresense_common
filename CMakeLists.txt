@@ -19,6 +19,7 @@ find_package(behaviortree_ros2 REQUIRED)
 find_package(btcpp_ros2_interfaces REQUIRED)
 find_package(pluginlib REQUIRED)
 find_package(coresense_msgs REQUIRED)
+find_package(triplestar_msgs REQUIRED)
 
 set(DEPENDENCIES
   ${btcpp_ros2_interfaces_TARGETS}
@@ -38,6 +39,7 @@ target_include_directories(bt_controller PUBLIC
 target_link_libraries(bt_controller
   ${DEPENDENCIES}
   ${coresense_msgs_TARGETS}
+  ${triplestar_msgs_TARGETS}
 )
 
 

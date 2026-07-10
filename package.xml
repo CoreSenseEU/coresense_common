@@ -13,6 +13,7 @@
   <depend>behaviortree_ros2</depend>
   <depend>btcpp_ros2_interfaces</depend>
   <depend>coresense_msgs</depend>
+  <depend>triplestar_msgs</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
