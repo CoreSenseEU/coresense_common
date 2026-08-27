@@ -5,7 +5,7 @@
 #include <behaviortree_ros2/tree_execution_server.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include "coresense_msgs/srv/register_behavior_tree.hpp"
-#include "triplestar_msgs/srv/sparql_query.hpp"
+#include "triplestar_msgs/srv/select_query.hpp"
 
 #include <string>
 #include <optional>
@@ -21,7 +21,7 @@ public:
     : TreeExecutionServer(std::make_unique<rclcpp::Node>("bt_controller", options))
   {
     //TODO: get a kb client
-    get_modelets_client_ptr = node()->create_client<triplestar_msgs::srv::SPARQLQuery>("/triplestar/query/get_modelets");
+    get_modelets_client_ptr = node()->create_client<triplestar_msgs::srv::SelectQuery>("/triplestar/query/get_modelets");
     // TODO: remove this from the blackboard and just set the query service in AssembleDecisionHeuristic
     //this->node()->declare_parameter("prolog_query_service", "/query");
     //this->node()->declare_parameter("prolog_assert_topic", "/assert");
@@ -36,7 +36,7 @@ public:
   const std::shared_ptr<coresense_msgs::srv::RegisterBehaviorTree::Request> request);
 
 protected:
-  rclcpp::Client<triplestar_msgs::srv::SPARQLQuery>::SharedPtr get_modelets_client_ptr;
+  rclcpp::Client<triplestar_msgs::srv::SelectQuery>::SharedPtr get_modelets_client_ptr;
   /**
    * @brief Optional callback invoked when a goal is received and before the
    * tree is created. If it returns false, the goal will be rejected.

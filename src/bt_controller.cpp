@@ -45,37 +45,19 @@ void BTController::onTreeCreated(BT::GoalResources& session)
   //globalBlackboard(session)->set("prolog_retract", node()->get_parameter("prolog_retract_topic").as_string());
   globalBlackboard(session)->createEntry("return_message", BT::TypeInfo::Create<std::string>());
 
-  session.tree.rootBlackboard()->set("MODELET_given_cues_f26775a9-f3f9-4c25-ab57-7ea39466a8a8_output", "r;g");
-  session.tree.rootBlackboard()->set("MODELET_given_alternatives_7fd3e7f9-f360-417e-847f-c4d011fbcf8c_output", "blue;red;#808006");
   std::set<std::string> keys;
   RCLCPP_INFO(node()->get_logger(), "Root node blackboard");
   for (auto key : session.tree.rootBlackboard()->getKeys()) {
     std::string key_str = std::string(key);
     if (key_str.rfind("MODELET_", 0) == 0) {
       RCLCPP_INFO(node()->get_logger(), "Collecting input: %s", key_str.c_str());
-      set_blackboard_from_kb(session, key_str);
     } else {
-      RCLCPP_INFO(node()->get_logger(), "Not getting %s", key_str.c_str());
+      //RCLCPP_INFO(node()->get_logger(), "Not getting %s", key_str.c_str());
     }
   }
 }
 
-std::string generateModeletQuery(std::string modelet_id) {
-  return "";
-}
 
-void BTController::set_blackboard_from_kb(BT::GoalResources& session, std::string key_str) {
-  auto bb = session.tree.rootBlackboard();
-  std::string modelet_id = key_str.substr(8, key_str.size() - 52);
-
-  auto callback = [bb, key_str](rclcpp::Client<triplestar_msgs::srv::SPARQLQuery>::SharedFuture future) {
-    //std::string tail = key_str.substr(key_str.size()-43).c_str();
-    bb->set(key_str, future.get()->result);
-  };
-  auto request = std::make_shared<triplestar_msgs::srv::SPARQLQuery::Request>();
-  request->query = generateModeletQuery(modelet_id);
-  get_modelets_client_ptr->async_send_request(request, callback);
-}
 
 bool BTController::onGoalReceived(const std::string& tree_name, const std::string& payload)
 {
