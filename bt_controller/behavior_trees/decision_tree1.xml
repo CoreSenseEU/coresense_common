@@ -1,0 +1,32 @@
+<root BTCPP_format="4">
+  <BehaviorTree ID="decision_tree1">
+  <Sequence>
+    <SubTree 
+      ID="assess" 
+        alternatives="{MODELET_given_alternatives_7fd3e7f9-f360-417e-847f-c4d011fbcf8c_output}" 
+        cues="{MODELET_given_cues_f26775a9-f3f9-4c25-ab57-7ea39466a8a8_output}" 
+        assessments="{EXERT_assess_675fe169-5c09-40c5-9d38-15a396bd57d9_output}" 
+      />
+    <SubTree 
+      ID="aggregate_preferences" 
+        assessments="{EXERT_assess_675fe169-5c09-40c5-9d38-15a396bd57d9_output}" 
+        evaluation="{EXERT_aggregate_preferences_2746a073-3b89-432f-89f7-f94d22907998_output}" 
+      />
+    <SubTree 
+      ID="order_dominating" 
+        evaluation="{EXERT_aggregate_preferences_2746a073-3b89-432f-89f7-f94d22907998_output}" 
+      ordering="{EXERT_order_dominating_df307b04-16ae-4f9b-b6df-c8188fa64f87_output}" 
+      />
+    <SubTree 
+      ID="take_best" 
+      weak_ordering="{EXERT_order_dominating_df307b04-16ae-4f9b-b6df-c8188fa64f87_output}" 
+      choice="{EXERT_take_best_5b7b84d3-6af4-483e-8a60-4d17397cc642_output}" 
+      />
+    <SubTree 
+      ID="accept_satisficing" 
+        choice="{EXERT_take_best_5b7b84d3-6af4-483e-8a60-4d17397cc642_output}" 
+        accepted="{EXERT_accept_satisficing_53cc003b-096d-4625-8fd6-16f6ad52980e_output}" 
+      />
+  </Sequence>
+  </BehaviorTree>
+</root>
