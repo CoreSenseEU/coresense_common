@@ -1,0 +1,17 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix sysml2: <https://github.com/Systems-Modeling/SysML-v2-Release#>.
+
+sysml2:partOf rdf:type rdf:Property;
+  rdfs:domain rdfs:Class;
+  rdfs:range rdfs:Class.
+
+sysml2:connection rdf:type rdf:Property;
+  rdfs:domain rdfs:Class;
+  rdfs:range rdfs:Class.
+
+
+sysml2:attributeOf rdf:type rdf:Property;
+  rdfs:domain rdfs:Class;
+  rdfs:range rdfs:Class.
+

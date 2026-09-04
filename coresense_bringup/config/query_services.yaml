@@ -1,0 +1,4 @@
+# Each entry creates a ROS service backed by a SPARQL query file from the
+# queries/ directory.
+
+query_services:

@@ -1,0 +1,127 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix cso: <https://github.com/CoreSenseEU/CoreSense/blob/main/models/ontology/coresense_ontologies/CSO/cso.sysml#>.
+@prefix uao: <https://github.com/CoreSenseEU/CoreSense/blob/main/models/ontology/coresense_ontologies/UAO/uao.sysml#>.
+@prefix iso: <https://github.com/CoreSenseEU/CoreSense/blob/main/models/ontology/coresense_ontologies/ISO/iso.sysml#>.
+@prefix sysml2: <https://github.com/Systems-Modeling/SysML-v2-Release#>.
+
+## cso.sysml
+cso:EngineOutput rdfs:subClassOf iso:Entity.
+cso:Modelet rdfs:subClassOf iso:Entity.
+cso:Engine rdfs:subClassOf iso:Entity.
+  #part output : EngineOutput;
+#cso:EngineOutput sysml2:partOf cso:Engine.
+
+cso:Exert rdfs:subClassOf iso:Process.
+cso:Estimation rdfs:subClassOf cso:EngineOutput.
+cso:Feature rdfs:subClassOf iso:Attribute.
+cso:CognitiveFunction rdfs:subClassOf iso:Function.
+cso:CognitiveCapability rdfs:subClassOf iso:Capability. 
+cso:Understanding rdfs:subClassOf iso:Entity.
+cso:Awareness rdfs:subClassOf iso:Entity.
+
+#attribute def ConsideredModel :> Boolean;
+#attribute def IsExertable :> Boolean;
+
+
+## cs_capability.sysml
+
+cso:Perception rdfs:subClassOf iso:Capability.
+  #ref part perceptor : Agent;
+  #ref part percept : Entity;
+  #ref part perceptive_environment : Environment;
+
+cso:PassivePerception rdfs:subClassOf cso:Perception.
+
+cso:ActivePerception rdfs:subClassOf cso:Perception.
+  #ref part observation_goal : Goal;
+  #alias Monitoring for ActivePerception;
+
+
+## engine.sysml
+
+cso:exerts_modelet rdf:type rdf:Property;
+  rdfs:domain cso:Engine;
+  rdfs:range cso:Modelet.
+
+cso:exerts_model rdf:type rdf:Property;
+  rdfs:domain cso:Engine;
+  rdfs:range iso:Model.
+
+cso:has_process rdf:type rdf:Property;
+  rdfs:domain cso:Engine;
+  rdfs:range cso:Exert.
+
+cso:interests rdf:type rdf:Property;
+  rdfs:domain cso:EngineOutput;
+  rdfs:range iso:Agent.
+
+cso:provides rdf:type rdf:Property;
+  rdfs:domain cso:Engine;
+  rdfs:range cso:CognitiveFunction.
+
+cso:produces rdf:type rdf:Property;
+  rdfs:domain cso:Engine;
+  rdfs:range cso:EngineOutput.
+
+cso:aligned_with rdf:type rdf:Property;
+  rdfs:domain cso:EngineOutput;
+  rdfs:range iso:Goal.
+
+
+## estimation.sysml
+#attribute estimation_uncertainty : UncertaintyLevel;
+
+cso:interests rdf:type rdf:Property;
+  rdfs:domain cso:Estimation;
+  rdfs:range iso:Agent.
+
+cso:uses_modelet rdf:type rdf:Property;
+  rdfs:domain cso:Estimation;
+  rdfs:range cso:Modelet.
+
+cso:uses_engine rdf:type rdf:Property;
+  rdfs:domain cso:Estimation;
+  rdfs:range cso:Engine.
+
+## modelet.sysml
+#attribute is_model : ConsideredModel;
+#attribute is_exertable = 1;
+
+cso:represents_entity rdf:type rdf:Property;
+  rdfs:domain cso:Modelet;
+  rdfs:range iso:Entity.
+
+cso:represents_feature rdf:type rdf:Property;
+  rdfs:domain cso:Modelet;
+  rdfs:range iso:Feature.
+
+cso:depends_on rdf:type rdf:Property;
+  rdfs:domain cso:Modelet;
+  rdfs:range iso:Context.
+
+cso:conforms_model rdf:type rdf:Property;
+  rdfs:domain cso:Modelet;
+  rdfs:range iso:Model.
+
+#constraint def modelity_nature{
+#		// Modelets exertable without other modelets are models.
+#		is_model == is_exertable
+#		}
+
+cso:composed_of rdf:type rdf:Property;
+  rdfs:domain cso:Modelet;
+  rdfs:range cso:Modelet.
+
+cso:associated_to_engine rdf:type rdf:Property;
+  rdfs:domain cso:Modelet;
+  rdfs:range cso:Engine.
+
+cso:cf_uses_modelet rdf:type rdf:Property;
+  rdfs:domain cso:CognitiveFunction;
+  rdfs:range cso:Modelet.
+
+cso:cc_uses_modelet rdf:type rdf:Property;
+  rdfs:domain cso:CognitiveCapability;
+  rdfs:range cso:Modelet.
+

@@ -1,0 +1,433 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix iso: <https://github.com/CoreSenseEU/CoreSense/blob/main/models/ontology/coresense_ontologies/ISO/iso.sysml#>.
+@prefix sysml2: <https://github.com/Systems-Modeling/SysML-v2-Release#>.
+
+iso:Entity rdfs:subClassOf rdfs:Class.
+
+iso:SystemEntity rdfs:subClassOf iso:Entity.
+iso:System rdfs:subClassOf iso:Entity.
+iso:SystemEntity sysml2:partOf iso:System.
+
+iso:Model rdfs:subClassOf iso:Entity.
+iso:State rdfs:subClassOf iso:Entity.
+iso:Status rdfs:subClassOf iso:Entity.
+iso:Phenomena rdfs:subClassOf iso:Entity.
+iso:Attribute rdfs:subClassOf iso:Entity.
+iso:Function rdfs:subClassOf iso:Entity.
+iso:Capability rdfs:subClassOf iso:Entity.
+iso:Concern rdfs:subClassOf iso:Entity.
+iso:Context rdfs:subClassOf iso:Entity.
+iso:Knowledge sysml2:partOf iso:Context.
+iso:Scenario sysml2:partOf iso:Context.
+iso:Environment rdfs:subClassOf iso:Entity.
+iso:Constraint rdfs:subClassOf iso:Attribute.
+iso:Parameter rdfs:subClassOf iso:Attribute.
+iso:Structure rdfs:subClassOf iso:Attribute.
+iso:Behavior rdfs:subClassOf iso:Attribute.
+iso:Feature rdfs:subClassOf iso:Attribute.
+iso:Process rdfs:subClassOf iso:Entity.
+iso:Action rdfs:subClassOf iso:Process.
+iso:Agent rdfs:subClassOf iso:Entity.
+iso:Role rdfs:subClassOf iso:Entity.
+iso:Goal rdfs:subClassOf iso:Entity.
+iso:Value rdfs:subClassOf iso:Entity.
+iso:Stakeholder rdfs:subClassOf iso:Entity.
+iso:Objective rdfs:subClassOf iso:Entity.
+
+
+## action.sysml
+iso:MotorAction rdfs:subClassOf iso:Action.
+iso:CognitiveAction rdfs:subClassOf iso:Action.
+
+#attribute composable_action : Composable;
+
+iso:performed_by rdf:type rdf:Property;
+  rdfs:domain iso:Action;
+  rdfs:range iso:Agent.
+
+iso:changes_context rdf:type rdf:Property;
+  rdfs:domain iso:Action;
+  rdfs:range iso:Context.
+
+iso:changes_state rdf:type rdf:Property;
+  rdfs:domain iso:Action;
+  rdfs:range iso:State.
+
+iso:action_composed_of rdf:type rdf:Property;
+  rdfs:domain iso:Action;
+  rdfs:range iso:Action.
+
+
+## agent.sysml
+#attribute composable_agent : Composable;
+
+iso:performs rdf:type rdf:Property;
+  rdfs:domain iso:Agent;
+  rdfs:range iso:Action.
+
+iso:situated_in rdf:type rdf:Property;
+  rdfs:domain iso:Agent;
+  rdfs:range iso:Context.
+
+iso:plays_role rdf:type rdf:Property;
+  rdfs:domain iso:Agent;
+  rdfs:range iso:Role.
+
+iso:agent_composed_of rdf:type rdf:Property;
+  rdfs:domain iso:Agent;
+  rdfs:range iso:Agent.
+
+
+## attribute.sysml
+#attribute attribute_measure : Measure;
+#attribute observable_quality : QualitativeProperty;
+iso:describes_entity rdf:type rdf:Property;
+  rdfs:domain iso:Attribute;
+  rdfs:range iso:SystemEntity.
+
+iso:describes_system rdf:type rdf:Property;
+  rdfs:domain iso:Attribute;
+  rdfs:range iso:System.
+
+iso:relates_to_context rdf:type rdf:Property;
+  rdfs:domain iso:Attribute;
+  rdfs:range iso:Context.
+
+iso:relates_to_stakeholder rdf:type rdf:Property;
+  rdfs:domain iso:Attribute;
+  rdfs:range iso:Stakeholder.
+
+
+## behavior.sysml
+#attribute composable_behavior : Composable;
+#attribute str_behavior_cause : StructuralCauseOfBehavior;
+
+iso:evolution_of rdf:type rdf:Property;
+  rdfs:domain iso:Behavior;
+  rdfs:range iso:State.
+
+iso:behavior_of rdf:type rdf:Property;
+  rdfs:domain iso:Behavior;
+  rdfs:range iso:System.
+
+iso:influenced_by rdf:type rdf:Property;
+  rdfs:domain iso:Behavior;
+  rdfs:range iso:Context.
+
+iso:composed_of rdf:type rdf:Property;
+  rdfs:domain iso:Behavior;
+  rdfs:range iso:Behavior.
+
+iso:manifest rdf:type rdf:Property;
+  rdfs:domain iso:Behavior;
+  rdfs:range iso:Capability.
+
+iso:result_of_execution rdf:type rdf:Property;
+  rdfs:domain iso:Behavior;
+  rdfs:range iso:Function.
+
+#constraint def caused_by_structure { // Behavior that change because of structural change
+#		in str : TypedStructure;
+#		str_behavior_cause == not (str.static_str) // if str not static, cause of str change
+#	}
+
+
+## capability.sysml
+#attribute capability_measure : Measure;
+iso:DesiredEffect rdfs:subClassOf iso:State.
+  #attribute desirable_attr = 1;
+
+iso:developed_in rdf:type rdf:Property;
+  rdfs:domain iso:Capability;
+  rdfs:range iso:System.
+
+iso:provides_function rdf:type rdf:Property;
+  rdfs:domain iso:Capability;
+  rdfs:range iso:Function.
+
+iso:relative_to_stakeholder rdf:type rdf:Property;
+  rdfs:domain iso:Capability;
+  rdfs:range iso:Stakeholder.
+
+iso:provides rdf:type rdf:Property;
+  rdfs:domain iso:Capability;
+  rdfs:range iso:DesiredEffect.
+
+iso:require_entity rdf:type rdf:Property;
+  rdfs:domain iso:Capability;
+  rdfs:range iso:Entity.
+
+iso:require_action rdf:type rdf:Property;
+  rdfs:domain iso:Capability;
+  rdfs:range iso:Action.
+
+
+## concern.sysml
+#attribute concern_measure : Measure;
+#attribute concern_priority : PriorityLevel;
+
+iso:interests_stakeholder rdf:type rdf:Property;
+  rdfs:domain iso:Concern;
+  rdfs:range iso:Stakeholder.
+
+iso:depends_on rdf:type rdf:Property;
+  rdfs:domain iso:Concern;
+  rdfs:range iso:Concern.
+
+iso:related_to rdf:type rdf:Property;
+  rdfs:domain iso:Concern;
+  rdfs:range iso:Concern.
+
+iso:interests_stakeholder rdf:type rdf:Property;
+  rdfs:domain iso:Concern;
+  rdfs:range iso:Stakeholder.
+
+
+## context.sysml
+iso:considered_by rdf:type rdf:Property;
+  rdfs:domain iso:Context;
+  rdfs:range iso:Agent.
+
+iso:considers rdf:type rdf:Property;
+  rdfs:domain iso:Context;
+  rdfs:range iso:Phenomena.
+
+
+## environment.sysml
+iso:affected_by rdf:type rdf:Property;
+  rdfs:domain iso:Entity;
+  rdfs:range iso:System.
+
+iso:affects rdf:type rdf:Property;
+  rdfs:domain iso:System;
+  rdfs:range iso:Entity.
+
+iso:surround rdf:type rdf:Property;
+  rdfs:domain iso:Entity;
+  rdfs:range iso:System.
+
+
+## function.sysml
+#composable_function : Composable;
+
+iso:transforms_entity rdf:type rdf:Property;
+  rdfs:domain iso:Function;
+  rdfs:range iso:Entity.
+
+iso:transforms_state rdf:type rdf:Property;
+  rdfs:domain iso:Function;
+  rdfs:range iso:State.
+
+iso:associated_to rdf:type rdf:Property;
+  rdfs:domain iso:Function;
+  rdfs:range iso:Goal.
+
+iso:function_composed_of rdf:type rdf:Property;
+  rdfs:domain iso:Function;
+  rdfs:range iso:Function.
+
+
+## goal.sysml
+#attribute goal_measure : Measure;
+#attribute composable_goal : Composable;
+iso:DesiredState rdfs:subClassOf iso:State;
+  rdfs:subClassOf iso:Goal.
+
+iso:achievable_in rdf:type rdf:Property;
+  rdfs:domain iso:Goal;
+  rdfs:range iso:Context.
+
+iso:provides rdf:type rdf:Property;
+  rdfs:domain iso:Goal;
+  rdfs:range iso:Context.
+
+iso:goal_composed_of rdf:type rdf:Property;
+  rdfs:domain iso:Goal;
+  rdfs:range iso:Goal.
+
+iso:derived_from_goal rdf:type rdf:Property;
+  rdfs:domain iso:Goal;
+  rdfs:range iso:Goal.
+
+iso:derived_from_stakeholder rdf:type rdf:Property;
+  rdfs:domain iso:Goal;
+  rdfs:range iso:Stakeholder.
+
+iso:derived_from_objective rdf:type rdf:Property;
+  rdfs:domain iso:Goal;
+  rdfs:range iso:Objective.
+
+iso:has_attribute rdf:type rdf:Property;
+  rdfs:domain iso:Goal;
+  rdfs:range iso:Attribute.
+
+
+## model.sysml
+#attribute model_uncertainty : UncertaintyLevel;
+#attribute composable_model : Composable;
+#attribute actionable_model : Actionable;
+iso:represents_entity rdf:type rdf:Property;
+  rdfs:domain iso:Model;
+  rdfs:range iso:SystemEntity.
+
+iso:represents_system rdf:type rdf:Property;
+  rdfs:domain iso:Model;
+  rdfs:range iso:System.
+
+iso:represents_aspect rdf:type rdf:Property;
+  rdfs:domain iso:Model;
+  rdfs:range iso:Attribute.
+
+iso:model_composed_of rdf:type rdf:Property;
+  rdfs:domain iso:Model;
+  rdfs:range iso:Model.
+
+
+## role.sysml
+#attribute composable_role : Composable;
+iso:taken_by rdf:type rdf:Property;
+  rdfs:domain iso:Role;
+  rdfs:range iso:Entity.
+
+iso:contributes_to_concern rdf:type rdf:Property;
+  rdfs:domain iso:Role;
+  rdfs:range iso:Concern.
+
+iso:contributes_to_behavior rdf:type rdf:Property;
+  rdfs:domain iso:Role;
+  rdfs:range iso:Behavior.
+
+iso:contributes_to_function rdf:type rdf:Property;
+  rdfs:domain iso:Role;
+  rdfs:range iso:Function.
+
+iso:related_to_goal rdf:type rdf:Property;
+  rdfs:domain iso:Role;
+  rdfs:range iso:Goal.
+
+iso:affected_by rdf:type rdf:Property;
+  rdfs:domain iso:Role;
+  rdfs:range iso:Context.
+
+iso:composed_of rdf:type rdf:Property;
+  rdfs:domain iso:Role;
+  rdfs:range iso:Role.
+
+
+## stakeholder.sysml
+
+iso:interested_in rdf:type rdf:Property;
+  rdfs:domain iso:Stakeholder;
+  rdfs:range iso:System.
+
+iso:interested_in_sys_attr rdf:type rdf:Property;
+  rdfs:domain iso:Stakeholder;
+  rdfs:range iso:Attribute.
+
+iso:interested_in_concern rdf:type rdf:Property;
+  rdfs:domain iso:Stakeholder;
+  rdfs:range iso:Concern.
+
+
+## state.sysml
+
+iso:defines rdf:type rdf:Property;
+  rdfs:domain iso:State;
+  rdfs:range iso:Status.
+
+iso:is_current_state_of rdf:type rdf:Property;
+  rdfs:domain iso:State;
+  rdfs:range iso:System.
+
+iso:is_past_state_of rdf:type rdf:Property;
+  rdfs:domain iso:State;
+  rdfs:range iso:System.
+
+iso:affects rdf:type rdf:Property;
+  rdfs:domain iso:State;
+  rdfs:range iso:Behavior.
+
+iso:affected_by_str rdf:type rdf:Property;
+  rdfs:domain iso:State;
+  rdfs:range iso:Structure.
+
+iso:affected_by_context rdf:type rdf:Property;
+  rdfs:domain iso:State;
+  rdfs:range iso:Context.
+
+
+## structure.sysml
+#attribute composable_structure: Composable;
+iso:TypedStructure rdfs:subClassOf iso:Structure.
+  #attribute static_str : Static;
+
+#attribute adaptable_system : Adaptable;
+iso:AdaptableSystem rdfs:subClassOf iso:System.
+  #attribute adaptable_system = 1;
+
+#	constraint def is_static { // Structure is static except if the system has
+#  		// the adaptation capability.
+#		in adapt_sys : AdaptableSystem;
+#  		in str : TypedStructure;
+#  		str.static_str == not (adapt_sys.adaptable_system)
+#  	}
+iso:Component rdfs:subClassOf iso:Entity.
+iso:Link rdfs:subClassOf iso:Entity.
+
+iso:has_component rdf:type rdf:Property;
+  rdfs:domain iso:Structure;
+  rdfs:range iso:Component.
+
+iso:has_link rdf:type rdf:Property;
+  rdfs:domain iso:Structure;
+  rdfs:range iso:Link.
+
+iso:composed_of rdf:type rdf:Property;
+  rdfs:domain iso:Structure;
+  rdfs:range iso:Structure.
+
+iso:depends_on rdf:type rdf:Property;
+  rdfs:domain iso:Structure;
+  rdfs:range iso:Context.
+
+
+## system.sysml
+
+iso:interact_with rdf:type rdf:Property;
+  rdfs:domain iso:SystemEntity;
+  rdfs:range iso:SystemEntity.
+
+iso:composed_of rdf:type rdf:Property;
+  rdfs:domain iso:System;
+  rdfs:range iso:SystemEntity.
+
+iso:disjoint_with rdf:type rdf:Property;
+  rdfs:domain iso:System;
+  rdfs:range iso:Context.
+
+iso:has_state rdf:type rdf:Property;
+  rdfs:domain iso:System;
+  rdfs:range iso:State.
+
+
+## value.sysml
+#attribute composable_value : Composable;
+
+iso:value_composed_of rdf:type rdf:Property;
+  rdfs:domain iso:Goal;
+  rdfs:range iso:Goal.
+
+iso:provided_to rdf:type rdf:Property;
+  rdfs:domain iso:Value;
+  rdfs:range iso:Stakeholder.
+
+iso:outcome_of rdf:type rdf:Property;
+  rdfs:domain iso:Value;
+  rdfs:range iso:Process.
+
+iso:depends_on rdf:type rdf:Property;
+  rdfs:domain iso:Value;
+  rdfs:range iso:Context.
+
+
